@@ -1,7 +1,7 @@
 import { Map, List, fromJS } from 'immutable';
 import { expect } from 'chai';
 
-import { setEntries, nextEntries } from '../src/core';
+import { setEntries, nextEntries, vote } from '../src/core';
 
 describe('Core Services Logic', () => {
 
@@ -41,6 +41,27 @@ describe('Core Services Logic', () => {
           pair: List.of('Ants', 'Batman')
         }),
         entries: List.of('Archer')
+      }));
+    });
+
+  });
+
+  describe('#vote', () => {
+
+    it('creates a tally for the voted entry', () => {
+      const state = Map({
+        vote: Map({
+          pair: List.of('Ants', 'Batman')
+        }),
+        entries: List()
+      });
+      const nextState = vote(state, 'Batman')
+      expect(nextState).to.equal(fromJS({
+        vote: {
+          pair: ['Ants', 'Batman'],
+          tally: { 'Batman': 1 }
+        },
+        entries: []
       }));
     });
 
