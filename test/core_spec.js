@@ -65,6 +65,24 @@ describe('Core Services Logic', () => {
       }));
     });
 
+    it('adds to existing tally for the voted entry', () => {
+      const state = fromJS({
+        vote: {
+          pair: ['Ants', 'Batman'],
+          tally: { 'Batman': 2, 'Ants': 1 }
+        },
+        entries: []
+      });
+      const nextState = vote(state, 'Batman');
+      expect(nextState).to.equal(fromJS({
+        vote: {
+          pair: ['Ants', 'Batman'],
+          tally: { 'Batman': 3, 'Ants': 1 }
+        },
+        entries: []
+      }));
+    });
+
   });
 
 });
