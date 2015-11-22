@@ -1,4 +1,4 @@
-import { fromJS } from 'immutable';
+import { Map, fromJS } from 'immutable';
 import { expect } from 'chai';
 
 import { setEntries } from '../src/core';
@@ -16,6 +16,17 @@ describe('Core Services Logic', () => {
         entries: ['Ants', 'Batman']
       }));
     });
+
+    it('converts to immutable from JS', () => {
+      const state = Map();
+      const entries = ['Ants', 'Batman'];
+      const nextState = setEntries(state, entries);
+
+      expect(nextState).to.equal(fromJS({
+        entries: ['Ants', 'Batman']
+      }));
+    });
+
   });
 
 });
