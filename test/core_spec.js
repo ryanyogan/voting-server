@@ -44,6 +44,48 @@ describe('Core Services Logic', () => {
       }));
     });
 
+    describe('next state voting logic', () => {
+
+      it('puts the winner of the current vote back to the entries list', () => {
+        const state = Map({
+          vote: Map({
+            pair: List.of('Ants', 'Batman'),
+            tally: Map({
+              'Batman': 10,
+              'Ants': 2
+            })
+          }),
+          entries: List.of('Goodfellas', 'Apollo 13', 'The Rock')
+        });
+        const nextState = nextEntries(state);
+        expect(nextState).to.equal(Map({
+          vote: Map({
+            pair: List.of('Goodfellas', 'Apollo 13')
+          }),
+          entries: List.of('The Rock', 'Batman')
+        }));
+      });
+    });
+
+    it('puts both entries back if the vote was a tie', () => {
+      const state = fromJS({
+        vote: {
+          pair: ['Ants', 'Batman'],
+          tally: {
+            'Ants': 3,
+            'Batman': 3
+          }
+        },
+        entries: ['Goodfellas', 'The Rock', 'Apollo 13']
+      });
+      const nextState = nextEntries(state);
+      expect(nextState).to.equal(Map({
+        vote: Map({
+          pair: List.of('Goodfellas', 'The Rock')
+        }),
+        entries: List.of('Apollo 13', 'Ants', 'Batman')
+      }));
+    });
   });
 
   describe('#vote', () => {
