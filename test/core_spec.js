@@ -86,6 +86,23 @@ describe('Core Services Logic', () => {
         entries: List.of('Apollo 13', 'Ants', 'Batman')
       }));
     });
+
+    it('marks winner when just one entry is left', () => {
+      const state = Map({
+        vote: Map({
+          pair: List.of('Ants', 'Batman'),
+          tally: Map({
+            'Ants': 2,
+            'Batman': 45
+          })
+        }),
+        entries: List()
+      });
+      const nextState = nextEntries(state);
+      expect(nextState).to.equal(Map({
+        winner: 'Batman'
+      }));
+    });
   });
 
   describe('#vote', () => {
