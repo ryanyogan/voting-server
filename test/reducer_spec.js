@@ -5,6 +5,30 @@ import reducer from '../src/reducer';
 
 describe('reducer', () => {
 
+  it('can be used with reduce', () => {
+    const actions = [
+      {type: 'SET_ENTRIES', entries: ['Batman', 'Ants']},
+      {type: 'NEXT'},
+      {type: 'VOTE', entry: 'Batman'},
+      {type: 'VOTE', entry: 'Batman'},
+      {type: 'VOTE', entry: 'Ants'},
+      {type: 'NEXT'}
+    ];
+    const finalState = actions.reduce(reducer, Map());
+
+    expect(finalState).to.equal(fromJS({
+      winner: 'Batman'
+    }));
+  });
+
+  it('has an initial state', () => {
+    const action = { type: 'SET_ENTRIES', entries: ['Batman'] };
+    const nextState = reducer(undefined, action);
+    expect(nextState).to.equal(fromJS({
+      entries: ['Batman']
+    }));
+  });
+
   it('handles SET_ENTRIES', () => {
     const initialState = Map();
     const action = {type: 'SET_ENTRIES', entries: ['Batman']};
